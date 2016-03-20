@@ -1,8 +1,12 @@
 from config import account_sid, auth_token
 from twilio.rest import TwilioRestClient
-import json, urllib2
+import json, urllib2, sys
 
-stop = "8"
+try:
+	stop = sys.argv[1]
+else
+	print "didnt run script with arg"
+	stop = "43"
 
 client = TwilioRestClient(account_sid, auth_token)
 
@@ -21,7 +25,13 @@ except:
 
 message = ""
 if stop == "43":
-	message += "\nPower Center:\n"
+	message += "Power Center:\n"
+elif stop == "149":
+	message += "Hutchins:\n"
+elif stop == "98":
+	message += "Pierpont:\n"
+elif stop == "88":
+	message += "Cooley:\n"
 for bus in bus_at_stop:
 	route = bus['route']
 	time = bus['avg']
