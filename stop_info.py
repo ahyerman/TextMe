@@ -4,7 +4,7 @@ import json, urllib2, sys
 
 try:
 	stop = sys.argv[1]
-else
+except:
 	print "didnt run script with arg"
 	stop = "43"
 
