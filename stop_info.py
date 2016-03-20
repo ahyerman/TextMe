@@ -2,7 +2,7 @@ from config import account_sid, auth_token
 from twilio.rest import TwilioRestClient
 import json, urllib2
 
-stop = "43"
+stop = "8"
 
 client = TwilioRestClient(account_sid, auth_token)
 
@@ -25,12 +25,14 @@ if stop == "43":
 for bus in bus_at_stop:
 	route = bus['route']
 	time = bus['avg']
-	if route == 442:
+	# if route == 442:
+	if route == 443:
 		message += "Northwood "
-	elif route == 437:
+	# elif route == 437:
+	elif route == 438:
 		message += "Burs. "
 	message += str(time)
 	message += " min to stop\n"
  
-# message = client.messages.create(to="+12489332002", from_="+12482923363",
-# 	body=message)
+message = client.messages.create(to="+12489332002", from_="+12482923363",
+	body=message)
