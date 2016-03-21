@@ -3,7 +3,7 @@ from twilio.rest import TwilioRestClient
 from config import account_sid, auth_token
 import twilio.twiml, urllib2
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
 client = TwilioRestClient(account_sid, auth_token)
@@ -63,4 +63,4 @@ def send_bus_info():
 	return str(resp)
 
 if __name__ == "__main__":
-	app.run(debug=True)
+	application.run(debug=True)
