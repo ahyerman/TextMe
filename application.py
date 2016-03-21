@@ -1,12 +1,12 @@
 from flask import Flask, request, redirect
 from twilio.rest import TwilioRestClient
 #from config import account_sid, auth_token
-import twilio.twiml, urllib2
+import twilio.twiml, urllib2, os
 
 application = Flask(__name__)
 
-account_sid = application.config['TWILIO_ACCOUNT_SID']
-auth_token = application.config['TWILIO_AUTH_TOKEN']
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
 
 client = TwilioRestClient(account_sid, auth_token)
  
