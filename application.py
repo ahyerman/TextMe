@@ -35,8 +35,8 @@ def send_bus_info():
 	else:
 		resp.message("Couldnt find stop")
 		return str(resp)
-	
-	object = urllib2.urlopen("http://mbus.doublemp.com/map/v2/eta?stop=" + stop)
+	print "valid stop received: ", stop	
+	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=" + stop)
 	object = json.load(objct)
 	
 	try:
