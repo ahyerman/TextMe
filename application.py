@@ -12,7 +12,7 @@ client = TwilioRestClient(account_sid, auth_token)
 # print message.body
 
 
-@app.route("/", methods=['GET', 'POST'])
+@application.route("/", methods=['GET', 'POST'])
 def send_bus_info():
 	"""Respond to message of bus stop with eta info."""
 	messages = client.messages.list(from_=2489332002,)
