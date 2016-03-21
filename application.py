@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect
 from twilio.rest import TwilioRestClient
 #from config import account_sid, auth_token
-import twilio.twiml, urllib2, os
+import twilio.twiml, urllib2, os, json
 
 application = Flask(__name__)
 
@@ -37,7 +37,7 @@ def send_bus_info():
 		return str(resp)
 	print "valid stop received: ", stop	
 	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=" + stop)
-	object = json.load(objct)
+	object = json.load(object)
 	
 	try:
 		bus_at_stop = object['etas'][stop]['etas']
@@ -51,7 +51,7 @@ def send_bus_info():
 	message += "\n"
 	for bus in bus_at_stop:
 		route = bus['route']
-		time = bus['time']
+		time = bus['avg']
 		#if route == 442:
 		if route == 443:
 			message += "Northwoord "
