@@ -2,5 +2,28 @@ This file is used to keep track of bus route #'s
 as they change, the most up to date will be the
 furthest to the right
 Still need more route #'s
-442/443 northwood
-437/438 bursley baits
+
+Saturday
+442 northwood
+437 bursley baits
+
+Sunday
+443 northwood
+438 bursley baits
+
+Monday 
+414/415 Commuter north
+417/418 Commuter south
+440 Northwood
+412 Northwood Express
+433/434 Bursley Baits
+408 Northeast shuttle to dominos farm
+
+Tuesday
+433 Bursley baits
+414 Commuter north
+417 Commuter South
+412 Northwood express
+440 Northwood
+420 D2D CCTC
+419 D2D Northcampus
