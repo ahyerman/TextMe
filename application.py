@@ -27,7 +27,8 @@ client = TwilioRestClient(account_sid, auth_token)
 @application.route("/", methods=['GET', 'POST'])
 def send_bus_info():
 	"""Respond to message of bus stop with eta info."""
-	messages = client.messages.list(from_=number,)
+	messages = client.messages.list()
+	# messages = client.messages.list(from_=number,)
 	# sid =  messages[0].sid
 	body = messages[0].body
 	print body	
