@@ -35,25 +35,25 @@ def send_bus_info():
 	
 	request = body.lower()
 	resp = twilio.twiml.Response()
-	if request == "help":
+	if request == "supported stops":
 		message = "Supported stops are: pierpont, ugli, markley, "\
 			"cclittle, cooley, power center, law"
 		resp.message(message)
 		return str(resp)
 		
-	if request == "Pierpont":
+	if request == "pierpont":
 		stop = "98"
-	elif request == "Ugli":
+	elif request == "ugli":
 		stop = "76"
-	elif request == "Markley":
+	elif request == "markley":
 		stop = "29"
-	elif request == "Cclittle":
+	elif request == "cclittle":
 		stop = "137"
-	elif request == "Power center":
+	elif request == "power center":
 		stop = "43"
-	elif request == "Cooley":
+	elif request == "cooley":
 		stop = "88"
-	elif request == "Law":
+	elif request == "law":
 		stop = "149"
 	else:
 		resp.message("Couldnt find stop")
