@@ -32,22 +32,28 @@ def send_bus_info():
 	# sid =  messages[0].sid
 	body = messages[0].body
 	print body	
-
-	resp = twilio.twiml.Response()
 	
-	if body == "Pierpont":
+	request = body.lower()
+	resp = twilio.twiml.Response()
+	if request == "help":
+		message = "Supported stops are: pierpont, ugli, markley, "\
+			"cclittle, cooley, power center, law"
+		resp.message(message)
+		return str(resp)
+		
+	if request == "Pierpont":
 		stop = "98"
-	elif body == "Ugli":
+	elif request == "Ugli":
 		stop = "76"
-	elif body == "Markley":
+	elif request == "Markley":
 		stop = "29"
-	elif body == "Cclittle":
+	elif request == "Cclittle":
 		stop = "137"
-	elif body == "Power center":
+	elif request == "Power center":
 		stop = "43"
-	elif body == "Cooley":
+	elif request == "Cooley":
 		stop = "88"
-	elif body == "Law":
+	elif request == "Law":
 		stop = "149"
 	else:
 		resp.message("Couldnt find stop")
@@ -64,7 +70,7 @@ def send_bus_info():
 		resp.message("couldnt find route servicing stop")
 		return str(resp)
 
-	message = str(body)
+	message = str(request)
 	message += "\n"
 	for bus in bus_at_stop:
 		route = bus['route']
