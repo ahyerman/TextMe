@@ -6,7 +6,7 @@ import twilio.twiml, urllib2, os, json
 
 application = Flask(__name__)
 
-northwood = [440, 442, 443]
+northwood = [440, 441, 442, 443]
 bb = [437, 438, 433, 434]
 cn = [414, 415]
 cs = [417, 418]
@@ -24,20 +24,21 @@ client = TwilioRestClient(account_sid, auth_token)
 # print message.body
 
 
-@application.route("/", methods=['GET', 'POST'])
+@application.route("/", methods=['POST'])
 def send_bus_info():
 	"""Respond to message of bus stop with eta info."""
 	messages = client.messages.list()
 	# messages = client.messages.list(from_=number,)
 	# sid =  messages[0].sid
-	body = messages[0].body
-	print body	
+	# body = messages[0].body
+	# print body	
 	
-	request = body.lower()
+	# request = body.lower()
+	request = "pierpont"
 	resp = twilio.twiml.Response()
 	if request == "supported stops":
 		message = "Supported stops are: pierpont, ugli, markley, "\
-			"cclittle, cooley, power center, law"
+			"cclittle, cooley, power center, law, fxb"
 		resp.message(message)
 		return str(resp)
 		
@@ -55,24 +56,26 @@ def send_bus_info():
 		stop = "88"
 	elif request == "law":
 		stop = "149"
+	elif request == "fxb in":
+		stop = "94"
+	elif request == "fxb out":
+		stop = "91"
 	else:
 		resp.message("Couldnt find stop")
 		return str(resp)
-	print "valid stop received: ", stop	
-	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=" + stop)
-	object = json.load(object)
-	
-	try:
-		bus_at_stop = object['etas'][stop]['etas']
-	except:
-		bus_at_stop = ""
-		print "no routes servicing stop"
+	bus_at_stop = make_req(stop)
+	if bus_at_stop == "":	
 		resp.message("couldnt find route servicing stop")
 		return str(resp)
 
+	message = parse_busses(bus_at_stop, request)
+	resp.message(message)
+	return str(resp)
+
+def parse_busses(data, request):
 	message = str(request)
 	message += "\n"
-	for bus in bus_at_stop:
+	for bus in data:
 		route = bus['route']
 		time = bus['avg']
 		if route in northwood:
@@ -93,9 +96,35 @@ def send_bus_info():
 			message += "Ox shuttle "
 		message += str(time)
 		message += " min to stop\n"
+	return message
 
-	resp.message(message)
-	return str(resp)
+
+def make_req(stop):
+	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=" + stop)
+	object = json.load(object)
+	
+	try:
+		bus_at_stop = object['etas'][stop]['etas']
+		print bus_at_stop
+	except:
+		bus_at_stop = ""
+		print "no routes servicing stop"
+	if stop == "98":
+		object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=101")
+		object = json.load(object)
+		try:
+			add_stuff = object['etas']["101"]['etas']
+			print add_stuff
+
+			for bus in add_stuff:
+				bus_at_stop.append(bus)
+			print bus_at_stop
+		except:
+			print "failed getting murfin inbound"
+
+
+	return bus_at_stop
+
 
 if __name__ == "__main__":
 	application.run(debug=True)
