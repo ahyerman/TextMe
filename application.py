@@ -30,11 +30,11 @@ def send_bus_info():
 	messages = client.messages.list()
 	# messages = client.messages.list(from_=number,)
 	# sid =  messages[0].sid
-	# body = messages[0].body
+	body = messages[0].body
 	# print body	
 	
-	# request = body.lower()
-	request = "pierpont"
+	request = body.lower()
+	# request = "pierpont"
 	resp = twilio.twiml.Response()
 	if request == "supported stops":
 		message = "Supported stops are: pierpont, ugli, markley, "\
