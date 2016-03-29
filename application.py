@@ -89,9 +89,9 @@ def parse_busses(data, request):
 		elif route in nwx:
 			message += "NWX "
 		elif route in d2dn:
-			message += "D2D North "
+			message += "D2D to Central "
 		elif route in d2ds:
-			message += "D2D Central"
+			message += "D2D to North "
 		elif route in ox:
 			message += "Ox shuttle "
 		message += str(time)
