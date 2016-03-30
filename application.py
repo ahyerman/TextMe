@@ -33,12 +33,12 @@ def send_bus_info():
 	body = messages[0].body
 	# print body	
 	
-	request = body.lower()
+	request = body.lower().strip()
 	# request = "pierpont"
 	resp = twilio.twiml.Response()
 	if request == "supported stops":
 		message = "Supported stops are: pierpont, ugli, markley, "\
-			"cclittle, cooley, power center, law, fxb"
+			"cclittle, cooley, power center, law, fxb in, fxb out"
 		resp.message(message)
 		return str(resp)
 		
