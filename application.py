@@ -13,7 +13,7 @@ cs = [417, 418]
 nwx = [412]
 d2dn = [420]
 d2ds = [419]
-ox = [424]
+ox = [424, 425]
 night_owl = [423]
 number = os.environ['PHONE_NUMBER']
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
@@ -62,7 +62,7 @@ def send_bus_info():
 		stop = "43"
 	elif request == "cooley":
 		stop = "88"
-	elif request == "law":
+	elif request in ["law", "hutch", "hutchins", "law quad"]:
 		stop = "149"
 	elif request == "fxb in":
 		stop = "94"
