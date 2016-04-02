@@ -22,23 +22,21 @@ client = TwilioRestClient(account_sid, auth_token)
  
 # message = client.messages.get("MM800f449d0399ed014aae2bcc0cc2f2ec")
 # print message.body
-
+fail_string = "couldnt find route servicing stop"\
+                "\nText: supported stops\nfor a list of stops we support"
 
 @application.route("/", methods=['POST'])
 def send_bus_info():
 	"""Respond to message of bus stop with eta info."""
 	messages = client.messages.list()
-	# messages = client.messages.list(from_=number,)
-	# sid =  messages[0].sid
 	body = messages[0].body
-	# print body	
 	
 	request = body.lower().strip()
-	# request = "pierpont"
 	resp = twilio.twiml.Response()
 	if request == "supported stops":
 		message = "Supported stops are: pierpont, ugli, markley, "\
-			"cclittle, cooley, power center, law, fxb in, fxb out"
+			"cclittle, cooley, power center, law, fxb in, fxb out, "\
+			"im in, im out, john"
 		resp.message(message)
 		return str(resp)
 		
@@ -60,8 +58,14 @@ def send_bus_info():
 		stop = "94"
 	elif request == "fxb out":
 		stop = "91"
+	elif request == "im out":
+		stop = "64"
+	elif request == "im in":
+		stop = "80"
+	elif request == "john":
+		stop = "68"
 	else:
-		resp.message("Couldnt find stop")
+		resp.message(fail_string)
 		return str(resp)
 	bus_at_stop = make_req(stop)
 	if bus_at_stop == "":	
@@ -122,6 +126,18 @@ def make_req(stop):
 		except:
 			print "failed getting murfin inbound"
 
+	if stop == "137":
+		object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=138")
+		object = json.load(object)
+		try:
+			add_stuff = object['etas']["138"]['etas']
+			print add_stuff
+
+			for bus in add_stuff:
+				bus_at_stop.append(bus)
+			print bus_at_stop
+		except:
+			print "failed getting cclittle ruthven"
 
 	return bus_at_stop
 
