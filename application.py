@@ -7,13 +7,14 @@ import twilio.twiml, urllib2, os, json
 application = Flask(__name__)
 
 northwood = [440, 441, 442, 443]
-bb = [437, 438, 433, 434]
+bb = [433, 434, 436, 437, 438] #435???
 cn = [414, 415]
 cs = [417, 418]
 nwx = [412]
 d2dn = [420]
 d2ds = [419]
 ox = [424]
+night_owl = [423]
 number = os.environ['PHONE_NUMBER']
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
@@ -28,8 +29,17 @@ fail_string = "couldnt find route servicing stop"\
 @application.route("/", methods=['POST'])
 def send_bus_info():
 	"""Respond to message of bus stop with eta info."""
-	messages = client.messages.list()
-	body = messages[0].body
+	try:
+		# doesnt work right now
+		# for some reason request parameters are not around
+		# find a way to get them!
+		# message_sid = request.form['MessageSid']
+		body = request.form['Body']
+		print body
+	except:
+		print "couldnt find message body"
+		messages = client.messages.list()
+		body = messages[0].body
 	
 	request = body.lower().strip()
 	resp = twilio.twiml.Response()
@@ -40,15 +50,15 @@ def send_bus_info():
 		resp.message(message)
 		return str(resp)
 		
-	if request == "pierpont":
+	if request in ["pierpont", "pp", "98"]:
 		stop = "98"
-	elif request == "ugli":
+	elif request in ["ugli", "shapiro", "ug", "76"]:
 		stop = "76"
 	elif request == "markley":
 		stop = "29"
-	elif request == "cclittle":
+	elif request in ["cclittle", "cc", "ccl"]:
 		stop = "137"
-	elif request == "power center":
+	elif request in ["power center", "pc"]:
 		stop = "43"
 	elif request == "cooley":
 		stop = "88"
@@ -98,6 +108,8 @@ def parse_busses(data, request):
 			message += "D2D to North "
 		elif route in ox:
 			message += "Ox shuttle "
+		elif route in night_owl:
+			message += "Night Owl "
 		message += str(time)
 		message += " min to stop\n"
 	return message
