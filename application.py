@@ -10,7 +10,8 @@ northwood = [440, 441, 442, 443]
 bb = [433, 434, 436, 437, 438] #435???
 cn = [414, 415]
 cs = [417, 418]
-nwx = [412]
+nwx_out = [412]
+nwx_in = [411]
 d2dn = [420]
 d2ds = [419]
 ox = [424, 425]
@@ -110,6 +111,10 @@ def parse_busses(data, request):
 			message += "Ox shuttle "
 		elif route in night_owl:
 			message += "Night Owl "
+		elif route in nwx_in:
+			message += "NWX to north "
+		elif route in nwx_out:
+			message += "NWX to central "
 		message += str(time)
 		message += " min to stop\n"
 	return message
