@@ -101,8 +101,6 @@ def parse_busses(data, request):
 			message += "Com. North "
 		elif route in cs:
 			message += "Com. South "
-		elif route in nwx:
-			message += "NWX "
 		elif route in d2dn:
 			message += "D2D to Central "
 		elif route in d2ds:
