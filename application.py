@@ -16,6 +16,7 @@ d2dn = [420]
 d2ds = [419]
 ox = [424, 425]
 night_owl = [423]
+
 number = os.environ['PHONE_NUMBER']
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
@@ -47,7 +48,7 @@ def send_bus_info():
 	if request == "supported stops":
 		message = "Supported stops are: pierpont, ugli, markley, "\
 			"cclittle, cooley, power center, law, fxb in, fxb out, "\
-			"im in, im out, john"
+			"im in, im out"
 		resp.message(message)
 		return str(resp)
 		
@@ -88,31 +89,20 @@ def send_bus_info():
 	return str(resp)
 
 def parse_busses(data, request):
+	bus_dict = {}
+	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/routes")
+	object = json.load(object)
+	for bus in object:
+		bus_dict[bus["id"]] = bus["short_name"]
 	message = str(request)
 	message += "\n"
 	for bus in data:
 		route = bus['route']
 		time = bus['avg']
-		if route in northwood:
-			message += "Northwood "
-		elif route in bb:
-			message += "Burs. "
-		elif route in cn:
-			message += "Com. North "
-		elif route in cs:
-			message += "Com. South "
-		elif route in d2dn:
-			message += "D2D to Central "
-		elif route in d2ds:
-			message += "D2D to North "
-		elif route in ox:
-			message += "Ox shuttle "
-		elif route in night_owl:
-			message += "Night Owl "
-		elif route in nwx_in:
-			message += "NWX to north "
-		elif route in nwx_out:
-			message += "NWX to central "
+		if route in bus_dict:
+			message += bus_dict[route]
+			message += " "
+
 		message += str(time)
 		message += " min to stop\n"
 	return message
@@ -121,7 +111,7 @@ def parse_busses(data, request):
 def make_req(stop):
 	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=" + stop)
 	object = json.load(object)
-	
+
 	try:
 		bus_at_stop = object['etas'][stop]['etas']
 		print bus_at_stop
