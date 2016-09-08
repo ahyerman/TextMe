@@ -6,17 +6,6 @@ import twilio.twiml, urllib2, os, json
 
 application = Flask(__name__)
 
-northwood = [440, 441, 442, 443]
-bb = [433, 434, 436, 437, 438] #435???
-cn = [414, 415]
-cs = [417, 418]
-nwx_out = [412]
-nwx_in = [411]
-d2dn = [420]
-d2ds = [419]
-ox = [424, 425]
-night_owl = [423]
-
 number = os.environ['PHONE_NUMBER']
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
