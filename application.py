@@ -32,7 +32,8 @@ def send_bus_info():
 		messages = client.messages.list()
 		body = messages[0].body
 	
-	request = body.lower().strip()
+	#request = body.lower().strip()
+	request = "routes"
 	resp = twilio.twiml.Response()
 	if request == "supported stops":
 		message = "Supported stops are: pierpont, ugli, markley, "\
@@ -63,19 +64,33 @@ def send_bus_info():
 		stop = "64"
 	elif request == "im in":
 		stop = "80"
-	elif request == "john":
-		stop = "68"
+	elif request == "routes":
+		stop = "-1"
 	else:
 		resp.message(fail_string)
 		return str(resp)
-	bus_at_stop = make_req(stop)
-	if bus_at_stop == "":	
-		resp.message("couldnt find route servicing stop")
-		return str(resp)
-
-	message = parse_busses(bus_at_stop, request)
+	if stop != "-1":
+		bus_at_stop = make_req(stop)
+		if bus_at_stop == "":	
+			resp.message("couldnt find route servicing stop")
+			return str(resp)
+		message = parse_busses(bus_at_stop, request)
+	elif stop == "-1":
+		message = get_routes()
 	resp.message(message)
 	return str(resp)
+
+def get_routes():
+	message = "routes\n"
+	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/routes")
+	object = json.load(object)
+	for route in object:
+		message += route["short_name"]
+		message += " "
+		message += route["name"]
+		message += "\n"
+	return message
+
 
 def parse_busses(data, request):
 	bus_dict = {}
@@ -100,7 +115,6 @@ def parse_busses(data, request):
 def make_req(stop):
 	object = urllib2.urlopen("http://mbus.doublemap.com/map/v2/eta?stop=" + stop)
 	object = json.load(object)
-
 	try:
 		bus_at_stop = object['etas'][stop]['etas']
 		print bus_at_stop
